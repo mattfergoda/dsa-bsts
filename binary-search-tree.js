@@ -11,29 +11,39 @@ class Node {
   * Returns the node, if found; else undefined. Uses recursion. */
 
   findRecursively(val) {
+    
 
+    if (this.val === val) return this;
+
+    if (val < this.val) {
+      return this.left?.findRecursively(val);
+    }
+    else {
+      return this.right?.findRecursively(val);
+    }
   }
 
   /** insertRecursively(val): Starting at the invoking node, insert a new node
    * into the BST with value val. Returns the inserted node. Uses recursion. */
 
   insertRecursively(val) {
-    let current = this;
-    let previous = null;
 
-    function traverse(current, previous) {
-      if (current === null) return previous;
-      previous = current;
-      if (val < current.val) traverse(current.left, current);
-      else traverse(current.right, current);
+    if (val < this.val) {
+      if (!this.left) {
+        this.left = new Node(val);
+        return this.left;
+      } else {
+        return this.left.insertRecursively(val);
+      }
     }
-
-    const insertionPoint = traverse(current, previous);
-    const newNode = new Node(val);
-    if (insertionPoint.val > val) insertionPoint.left = newNode;
-    else insertionPoint.right = newNode;
-
-    return newNode;
+    else {
+      if (!this.right) {
+        this.right = new Node(val);
+        return this.right;
+      } else {
+        return this.right.insertRecursively(val);
+      }
+    }
   }
 
   /** dfsPreOrder(): Traverse from the invoking node using pre-order DFS.
@@ -102,21 +112,37 @@ class BinarySearchTree {
    * Returns the tree instance. Uses recursion. */
 
   insertRecursively(val) {
-    return this.root ? this.root.insertRecursively(val) : 
+    if (this.root) this.root.insertRecursively(val);
+    else this.root = new Node(val);
+    return this;
   }
 
   /** find(val): Search the BST for a node with value val.
    * Returns the node, if found; else undefined. Uses iteration. */
 
   find(val) {
+    if (!this.root) {
+      this.root = new Node(val);
+      return this;
+    }
 
+    let current = this.root;
+
+    let looking = true;
+    while (current) {
+
+      if (val === current.val) {
+        return current;
+      }
+      current = val < current.val ? current.left : current.right;
+    }
   }
 
   /** findRecursively(val): Search the BST for a node with value val.
    * Returns the node, if found; else undefined. Uses recursion. */
 
   findRecursively(val) {
-
+    return this.root ? this.root.findRecursively(val) : undefined;
   }
 
   /** dfsPreOrder(): Traverse the BST using pre-order DFS.
