@@ -50,13 +50,41 @@ class Node {
   * Returns an array of visited nodes. */
 
   dfsPreOrder() {
+    const visited = [];
 
+    function _traverse(node, visited) {
+
+      visited.push(node.val);
+
+      if (node.left) _traverse(node.left, visited).val;
+      if (node.right) _traverse(node.right, visited).val;
+
+      return visited;
+    }
+  
+    return _traverse(this, visited);
   }
 
   /** dfsInOrder(): Traverse from the invoking node using in-order DFS.
   * Returns an array of visited nodes. */
 
   dfsInOrder() {
+    const visited = [];
+
+    function _traverse(node, visited) {
+      //if (node === null) return;
+
+      //visited.push(node);
+      if (node.left) _traverse(node.left, visited).val;
+
+      visited.push(node.val);
+
+      if (node.right) _traverse(node.right, visited).val;
+
+      return visited;
+    }
+  
+    return _traverse(this, visited);
 
   }
 
@@ -64,7 +92,21 @@ class Node {
   * Returns an array of visited nodes. */
 
   dfsPostOrder() {
+    const visited = [];
 
+    function _traverse(node, visited) {
+      //if (node === null) return;
+
+      //visited.push(node);
+      if (node.left) _traverse(node.left, visited).val;
+      if (node.right) _traverse(node.right, visited).val;
+
+
+      visited.push(node.val);
+      return visited;
+    }
+  
+    return _traverse(this, visited);
   }
 
 }
@@ -149,28 +191,40 @@ class BinarySearchTree {
    * Returns an array of visited nodes. */
 
   dfsPreOrder() {
-
+    return this.root ? this.root.dfsPreOrder() : [];
   }
 
   /** dfsInOrder(): Traverse the BST using in-order DFS.
    * Returns an array of visited nodes. */
 
   dfsInOrder() {
-
+    return this.root ? this.root.dfsInOrder() : [];
   }
 
   /** dfsPostOrder(): Traverse the BST using post-order DFS.
    * Returns an array of visited nodes. */
 
   dfsPostOrder() {
-
+    return this.root ? this.root.dfsPostOrder() : [];
   }
 
   /** bfs(): Traverse the BST using BFS.
    * Returns an array of visited nodes. */
 
   bfs() {
+    if (!this.root) return [];
 
+    const seen = [];
+    const toVisitQueue = [this.root];
+
+    while (toVisitQueue.length > 0) {
+      const current = toVisitQueue.shift();
+      seen.push(current.val);
+
+      if (current.left) toVisitQueue.push(current.left);
+      if (current.right) toVisitQueue.push(current.right);
+    }
+    return seen;
   }
 
   /** findSuccessorNode(node): Find and return node with next largest value.
